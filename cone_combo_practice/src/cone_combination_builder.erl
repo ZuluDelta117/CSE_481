@@ -2,16 +2,31 @@
 -export([cone_combinations/2,cone_combinations/1,most_popular_combinations/2]).
 
 
+cone_combinations([],_) -> 
+	[];
+cone_combinations(nil,_) -> 
+	fail;
 cone_combinations(Top_flavors,Bottom_flavors) ->
-	to_do.
+	[{X, Y} || X <- Top_flavors, Y <- Bottom_flavors].
 
+cone_combinations([]) -> 
+	[];
+cone_combinations(nil) -> 
+	fail;
+cone_combinations(Flavor_list) ->
+	[{X, Y} || X <- Flavor_list, Y <- Flavor_list].
 
-cone_combinations(Flavor_list)->
-	to_do.
-
-
+most_popular_combinations(_,[])->
+	fail;
+most_popular_combinations(Count,List) when (Count > length(List)) == true -> 
+	fail;
+most_popular_combinations(0,_)->
+	[];
+most_popular_combinations(Count,_) when Count < 0 ->
+	fail;
 most_popular_combinations(Count,List)->
-	to_do.
+	{H,_Remainder}=lists:split(Count,List),
+	H.
 
 
 
@@ -160,4 +175,4 @@ most_popular_combinations_test_()->
 	 ?_assertEqual([],most_popular_combinations(0,Sorted_combinations_with_purchases)),
 	 ?_assertEqual(fail,most_popular_combinations(-3,Sorted_combinations_with_purchases))
 	].
--endif.
+-endif. 

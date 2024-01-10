@@ -1,0 +1,3 @@
+-module(practice).
+
+-export([]).

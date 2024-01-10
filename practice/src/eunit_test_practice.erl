@@ -1,19 +1,23 @@
--module(team_builder).
+-module(eunit_test_practice).
 -export([divide/2,lower_divide/2,remainder/2]).
 
 %% this function has floats as its value
-divide(Dividend,Divisor)->
-	to_do.
+divide(_,0)-> fail;
+divide(Dividend,Divisor)-> Dividend / Divisor.
 
 %% this function has as its value the greatest integer less than the float that is the result of division
-lower_divide(Dividend,Divisor)->
-	to_do.
+lower_divide(_,0)-> fail;
+lower_divide(Dividend,Divisor)-> Dividend div Divisor.
 
 %% this function has as its value an integer that is the remainder of doing the division
-remainder(Dividend,Divisor)->
-	to_do.
-
-
+remainder(_,0)-> fail;
+remainder(Dividend,Divisor)-> 
+	case is_integer(Dividend) or is_integer(Divisor) of
+		false -> 
+			fail;
+		_ -> 
+			Dividend rem Divisor
+	end.
 
 -ifdef(EUNIT).
 %%

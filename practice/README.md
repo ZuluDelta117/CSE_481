@@ -1,4 +1,4 @@
-friend
+practice
 =====
 
 An OTP library
