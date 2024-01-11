@@ -37,11 +37,13 @@ run(Friend_list)->
 		{Pid, {add, Friend}} -> 
 			Pid ! received,
 			run([Friend|Friend_list]);
+		
 		{Pid, {has_friend, Friend}} ->
 			Pid ! lists:member(Friend, Friend_list),
 			run(Friend_list);
+		
 		{Pid, {has_friends, Friends}} ->
-			Pid ! length(Friend_list -- Friends) == ,
+			Pid ! length(Friend_list -- Friends) == (length(Friend_list) - length(Friends)),
 			run(Friend_list)
 end.
 
