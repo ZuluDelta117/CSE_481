@@ -34,8 +34,13 @@ rpc(Pid,Message)->
 run(Friend_list)->
 	% complete this function.
 	receive
-		{Pid, {add, Friend_list}} -> 
-			Pid ! {received}
+		{Pid, {add, Friend}} -> 
+			Pid ! received,
+			run([Friend|Friend_list]);
+		{Pid, {has_friend, Friend}} ->
+			Pid ! received,
+			
+			
 	end.
 
 -ifdef(EUNIT).
