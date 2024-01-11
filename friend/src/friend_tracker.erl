@@ -33,6 +33,10 @@ rpc(Pid,Message)->
 
 run(Friend_list)->
 	% complete this function.
+	receive
+		{Pid, {add, Friend_list}} -> 
+			Pid ! {received}
+	end.
 
 -ifdef(EUNIT).
 %%
