@@ -38,10 +38,12 @@ run(Friend_list)->
 			Pid ! received,
 			run([Friend|Friend_list]);
 		{Pid, {has_friend, Friend}} ->
-			Pid ! received,
-			
-			
-	end.
+			Pid ! lists:member(Friend, Friend_list),
+			run(Friend_list);
+		{Pid, {has_friends, Friends}} ->
+			Pid ! length(Friend_list -- Friends) == ,
+			run(Friend_list)
+end.
 
 -ifdef(EUNIT).
 %%
