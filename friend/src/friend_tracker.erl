@@ -9,7 +9,7 @@
 %%
 
 start(Initial_friends_list)->
-	spawn(?MODULE, run, [Initial_friends_list]).%The MODULE macro is used instead of hard coding the module name.
+	spawn(?MODULE, run, [Initial_friends_list]). % The MODULE macro is used instead of hard coding the module name.
 
 
 %%--------------------------
@@ -22,9 +22,9 @@ start(Initial_friends_list)->
 rpc(Pid,Message)->
 	Pid ! {self(),Message},
 	receive
-         Response ->
-             Response
-     end.
+        Response ->
+            Response
+    end.
 
 
 %%---------------------------
@@ -32,7 +32,7 @@ rpc(Pid,Message)->
 %%---------------------------
 
 run(Friend_list)->
-	%complete this function.
+	% complete this function.
 
 -ifdef(EUNIT).
 %%
@@ -44,70 +44,70 @@ run(Friend_list)->
 
 add_friend_test_() ->
 {setup,
-	fun()->%runs before any of the tests
+	fun()->% runs before any of the tests
 			Pid = spawn(?MODULE,run,[[sue,grace,fred]]),	
 			register(test_adder,Pid)
 		end,
-	fun(_)->%runs after all of the tests
+	fun(_)->% runs after all of the tests
 		unregister(test_adder)
 	end,
-	%factorializer tests start here
+	% factorializer tests start here
 	[ ?_assertEqual(received,rpc(test_adder,{add,bob})),%happy path
-	  %nasty thoughts start here
-	  ?_assertEqual(received,rpc(test_adder,{add,1})),
-	  ?_assertEqual(received,rpc(test_adder,{add,#{name=>suzannah,age=>23}}))
+	% nasty thoughts start here
+	?_assertEqual(received,rpc(test_adder,{add,1})),
+	?_assertEqual(received,rpc(test_adder,{add,#{name=>suzannah,age=>23}}))
 	]
 }.
 
 add_friends_test_() ->
 {setup,
-	fun()->%runs before any of the tests
+	fun()->% runs before any of the tests
 			Pid = spawn(?MODULE,run,[[sue,grace,fred]]),	
 			register(test_adder,Pid)
 		end,
-	fun(_)->%runs after all of the tests
+	fun(_)->% runs after all of the tests
 		unregister(test_adder)
 	end,
-	%factorializer tests start here
+	% factorializer tests start here
 	[ ?_assertEqual(received,rpc(test_adder,{add,[bob,alice,joe]})),%happy path
-	  %nasty thoughts start here
-	  ?_assertEqual(received,rpc(test_adder,{add,[]})),
-	  ?_assertEqual(received,rpc(test_adder,{add,[#{name=>suzannah,age=>23},#{name=>gunhild,age=>20}]}))
+	% nasty thoughts start here
+	?_assertEqual(received,rpc(test_adder,{add,[]})),
+	?_assertEqual(received,rpc(test_adder,{add,[#{name=>suzannah,age=>23},#{name=>gunhild,age=>20}]}))
 	]
 }.
 
 has_friend_test_() ->
 {setup,
-	fun()->%runs before any of the tests
+	fun()->% runs before any of the tests
 			Pid = spawn(?MODULE,run,[[sue,grace,fred]]),	
 			register(test_finder,Pid)
 		end,
-	fun(_)->%runs after all of the tests
+	fun(_)->% runs after all of the tests
 		unregister(test_finder)
 	end,
-	%factorializer tests start here
+	% factorializer tests start here
 	[ ?_assert(rpc(test_finder,{has_friend,sue})),%happy path
-	  %nasty thoughts start here
-	  ?_assertNot(rpc(test_finder,{has_friend,bob})),
-	  ?_assertNot(rpc(test_finder,{has_friend,[#{name=>suzannah,age=>23},#{name=>gunhild,age=>20}]}))
+	% nasty thoughts start here
+	?_assertNot(rpc(test_finder,{has_friend,bob})),
+	?_assertNot(rpc(test_finder,{has_friend,[#{name=>suzannah,age=>23},#{name=>gunhild,age=>20}]}))
 	]
 }.
 
 has_friends_test_() ->
 {setup,
-	fun()->%runs before any of the tests
+	fun()->% runs before any of the tests
 			Pid = spawn(?MODULE,run,[[sue,grace,fred]]),	
 			register(test_finder,Pid)
 		end,
-	fun(_)->%runs after all of the tests
+	fun(_)->% runs after all of the tests
 		unregister(test_finder)
 	end,
-	%factorializer tests start here
+	% factorializer tests start here
 	[ ?_assert(rpc(test_finder,{has_friends,[sue,fred]})),%happy path
-	  %nasty thoughts start here
-	  ?_assert(rpc(test_finder,{has_friends,[]})),
-	  ?_assertNot(rpc(test_finder,{has_friends,[bob]})),
-	  ?_assertNot(rpc(test_finder,{has_friends,[#{name=>suzannah,age=>23},#{name=>gunhild,age=>20}]}))
+	% nasty thoughts start here
+	?_assert(rpc(test_finder,{has_friends,[]})),
+	?_assertNot(rpc(test_finder,{has_friends,[bob]})),
+	?_assertNot(rpc(test_finder,{has_friends,[#{name=>suzannah,age=>23},#{name=>gunhild,age=>20}]}))
 	]
 }.
 
@@ -115,66 +115,66 @@ has_friends_test_() ->
 
 remove_friend_test_() ->
 {setup,
-	fun()->%runs before any of the tests
+	fun()->% runs before any of the tests
 			Pid = spawn(?MODULE,run,[[sue,grace,fred]]),	
 			register(test_remover,Pid)
 		end,
-	fun(_)->%runs after all of the tests
+	fun(_)->% runs after all of the tests
 		unregister(test_remover)
 	end,
-	%factorializer tests start here
-	[ ?_assertEqual(received,rpc(test_remover,{remove,fred})),%happy path
-	  %nasty thoughts start here
-	  ?_assertEqual(received,rpc(test_remover,{remove,bob})),
-	  ?_assertEqual(received,rpc(test_remover,{remove,[#{name=>suzannah,age=>23},#{name=>gunhild,age=>20}]}))
+	% factorializer tests start here
+	[ ?_assertEqual(received,rpc(test_remover,{remove,fred})),% happy path
+	% nasty thoughts start here
+	?_assertEqual(received,rpc(test_remover,{remove,bob})),
+	?_assertEqual(received,rpc(test_remover,{remove,[#{name=>suzannah,age=>23},#{name=>gunhild,age=>20}]}))
 	]
 }.
 
 remove_friends_test_() ->
 {setup,
-	fun()->%runs before any of the tests
+	fun()->% runs before any of the tests
 			Pid = spawn(?MODULE,run,[[sue,grace,fred]]),	
 			register(test_remover,Pid)
 		end,
-	fun(_)->%runs after all of the tests
+	fun(_)->% runs after all of the tests
 		unregister(test_remover)
 	end,
-	%factorializer tests start here
+	% factorializer tests start here
 	[ ?_assertEqual(received,rpc(test_remover,{remove,[sue,fred]})),%happy path
-	  %nasty thoughts start here
-	  ?_assertEqual(received,rpc(test_remover,{remove,[bob]})),
-	  ?_assertEqual(received,rpc(test_remover,{remove,[#{name=>suzannah,age=>23},#{name=>gunhild,age=>20}]}))
+	% nasty thoughts start here
+	?_assertEqual(received,rpc(test_remover,{remove,[bob]})),
+	?_assertEqual(received,rpc(test_remover,{remove,[#{name=>suzannah,age=>23},#{name=>gunhild,age=>20}]}))
 	]
 }.
 
 get_friends_test_() ->
 {setup,
-	fun()->%runs before any of the tests
+	fun()->% runs before any of the tests
 			Pid = spawn(?MODULE,run,[[sue,grace,fred]]),	
 			register(test_remover,Pid)
 		end,
-	fun(_)->%runs after all of the tests
+	fun(_)->% runs after all of the tests
 		unregister(test_remover)
 	end,
-	%factorializer tests start here
-	[ ?_assertEqual([sue,grace,fred],rpc(test_remover,get))%happy path
+	% factorializer tests start here
+	[ ?_assertEqual([sue,grace,fred],rpc(test_remover,get)) % happy path
 	]
 }.
 
 bad_message_test_() ->
 	{setup,
-	fun()->%runs before any of the tests
+	fun()->% runs before any of the tests
 			Pid = spawn(?MODULE,run,[[sue,grace,fred]]),	
 			register(test_bad_message,Pid)
 		end,
-	fun(_)->%runs after all of the tests
+	fun(_)->% runs after all of the tests
 		unregister(test_bad_message)
 	end,
-	%factorializer tests start here
-	[ ?_assertMatch({fail, unrecognized_message},rpc(test_bad_message,what)),%happy path
-	  ?_assertMatch({fail, unrecognized_message},rpc(test_bad_message,nil)),
-	  ?_assertMatch({fail, unrecognized_message},rpc(test_bad_message,[])),
-	  ?_assertMatch({fail, unrecognized_message},rpc(test_bad_message,{}))
+	% factorializer tests start here
+	[ ?_assertMatch({fail, unrecognized_message},rpc(test_bad_message,what)), % happy path
+	?_assertMatch({fail, unrecognized_message},rpc(test_bad_message,nil)),
+	?_assertMatch({fail, unrecognized_message},rpc(test_bad_message,[])),
+	?_assertMatch({fail, unrecognized_message},rpc(test_bad_message,{}))
 	]
 }.
 

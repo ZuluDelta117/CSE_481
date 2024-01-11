@@ -34,6 +34,115 @@ factorializer() ->
 			factorializer()
 		end.
 
+% spawn adder
+start_adder() ->
+	spawn(?MODULE,adder,[]).
+
+% add client
+add(Adder_pid, Num1, Num2) ->
+	Adder_pid ! {self(),Num1,Num2},
+	receive
+		Response ->
+			Response
+	end.
+
+% server adder
+adder() ->
+	receive
+		{From, Num1, _Num2} when (is_number(Num1) == false)  ->
+			From ! {fail, Num1, is_not_number},
+			adder();
+		{From, _Num1, Num2} when (is_number(Num2) == false)  ->
+			From ! {fail, Num2, is_not_number},
+			adder();
+		{From, Num1, Num2} ->
+			From ! Num1 + Num2,
+			adder()
+	end.
+
+
+% spawn subtracter
+start_subtracter() ->
+	spawn(?MODULE,subtracter,[]).
+
+% subtract client
+subtract(Subtracter_pid, Request1, Request2) ->
+	Subtracter_pid ! {self(),Request1,Request2},
+	receive
+		Response ->
+			Response
+	end.
+
+% server subtracter
+subtracter() ->
+	receive
+		{From,Request1,_Request2} when (is_number(Request1) == false)  ->
+			From ! {fail,Request1,is_not_number}, 
+			subtracter();
+		{From,_Request1,Request2} when (is_number(Request2) == false)  ->
+			From ! {fail,Request2,is_not_number}, 
+			subtracter();
+		{From,Request1,Request2} ->
+			From ! Request1-Request2, 
+			subtracter()
+	end.
+
+
+% spawn multiplier
+start_multiplier() ->
+	spawn(?MODULE,multiplier,[]).
+
+% multiply client
+multiply(Multiplier_pid, Multiplicand, Multiplier) ->
+	Multiplier_pid ! {self(),Multiplicand,Multiplier},
+	receive
+		Response ->
+			Response
+	end.
+
+% server multiplier
+multiplier() ->
+	receive
+		{From,Multiplicand,_Multiplier} when (is_number(Multiplicand) == false)  ->
+			From ! {fail,Multiplicand,is_not_number},
+			multiplier();
+		{From,_Multiplicand,Multiplier} when (is_number(Multiplier) == false)  ->
+			From ! {fail,Multiplier,is_not_number},
+			multiplier();
+		{From,Multiplicand,Multiplier} ->
+			From ! Multiplicand*Multiplier,
+			multiplier()
+	end.
+
+
+% spawn divider
+start_divider() ->
+	spawn(?MODULE,divider,[]).
+
+% divide client
+divide(Dividerer_pid, Dividend, Divisor) ->
+	Dividerer_pid ! {self(),Dividend,Divisor},
+	receive
+		Response ->
+			Response
+	end.
+
+% server divider
+divider() ->
+	receive
+		{From,Dividend,_Divisor} when (is_number(Dividend) == false)  ->
+			From ! {fail,Dividend,is_not_number},
+			divider();
+		{From,_Dividend,Divisor} when (is_number(Divisor) == false)  ->
+			From ! {fail,Divisor,is_not_number},
+			divider();
+		{From,_Dividend,0} ->
+			From ! {fail,division_by_zero},
+			divider();
+		{From,Dividend,Divisor} ->
+			From ! Dividend/Divisor,
+			divider()
+	end.
 
 
 -ifdef(EUNIT).
