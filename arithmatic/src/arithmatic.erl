@@ -24,16 +24,58 @@ start_divider() ->
 	spawn(?MODULE,divider,[]).
 
 adder() ->
-	ok.
+	receive
+		{Pid, A, _} when not is_float(A) and not is_integer(A)-> 
+			Pid ! {fail, A, is_not_number},
+			adder();
+		{Pid, _, B} when not is_float(B) and not is_integer(B)-> 
+			Pid ! {fail, B, is_not_number},
+			adder();
+		{Pid, A, B} ->
+			Pid ! A + B,
+			adder()
+		
+	end.
 
 subtracter() ->
-	ok.
+	receive
+		{Pid, A, _} when not is_float(A) and not is_integer(A)-> 
+			Pid ! {fail, A, is_not_number},
+			subtracter();
+		{Pid, _, B} when not is_float(B) and not is_integer(B)-> 
+			Pid ! {fail, B, is_not_number},
+			subtracter();
+		{Pid, A, B} ->
+			Pid ! A - B,
+			subtracter()	
+	end.
 
 multiplier() ->
-	ok.
+	receive
+		{Pid, A, _} when not is_float(A) and not is_integer(A)-> 
+			Pid ! {fail, A, is_not_number},
+			multiplier();
+		{Pid, _, B} when not is_float(B) and not is_integer(B)-> 
+			Pid ! {fail, B, is_not_number},
+			multiplier();
+		{Pid, A, B} ->
+			Pid ! A * B,
+			multiplier()	
+	end.
+
 
 divider() ->
-	ok.
+	receive
+	{Pid, A, _} when not is_float(A) and not is_integer(A)-> 
+		Pid ! {fail, A, is_not_number},
+		divider();
+	{Pid, _, B} when not is_float(B) and not is_integer(B)-> 
+		Pid ! {fail, B, is_not_number},
+		divider();
+	{Pid, A, B} ->
+		Pid ! A / B,
+		divider()	
+	end.
 
 factorializer() ->
 	receive
@@ -50,10 +92,30 @@ factorializer() ->
 			Pid ! N * factorializer(),
 			factorializer()
 	end.
-add(_,_,_) -> ok.
-subtract(_,_,_) -> ok.
-multiply(_,_,_) -> ok.
-divide(_,_,_) ->ok.
+add(Pid,A,B) -> 
+	Pid ! {self(),A,B},
+	receive
+        Response ->
+            Response
+    end.
+subtract(Pid,A,B) -> 
+	Pid ! {self(),A,B},
+	receive
+        Response ->
+            Response
+    end.
+multiply(Pid,A,B) -> 
+	Pid ! {self(),A,B},
+	receive
+        Response ->
+            Response
+    end.
+divide(Pid,A,B) -> 
+	Pid ! {self(),A,B},
+	receive
+        Response ->
+            Response
+    end.
 
 
 factorial_of(Pid, N) ->
