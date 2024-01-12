@@ -49,7 +49,19 @@ run(Friend_list)->
 		{Pid, {remove, Friend}} ->
 			Pid ! received,
 			lists:delete(Friend,Friend_list),
+			run(Friend_list);
+
+		{Pid, get} ->
+			Pid ! Friend_list,
+			run(Friend_list);
+
+		{Pid, _} ->
+			Pid ! {fail, unrecognized_message},
 			run(Friend_list)
+		
+
+
+		
 end.
 
 -ifdef(EUNIT).
