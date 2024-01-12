@@ -9,40 +9,60 @@
 %%
 
 start_factorializer() ->
-	ok.
+	spawn(?MODULE,factorializer,[]).
 
 start_adder() ->
-	ok.
+	spawn(?MODULE,adder,[]).
 
 start_subtracter() ->
-	ok.
+	spawn(?MODULE,subtracter,[]).
 
 start_multiplier() ->
-	ok.
+	spawn(?MODULE,multiplier,[]).
 
 start_divider() ->
+	spawn(?MODULE,divider,[]).
+
+adder() ->
 	ok.
 
-add() ->
+subtracter() ->
 	ok.
 
-subtract() ->
+multiplier() ->
 	ok.
 
-multiply() ->
+divider() ->
 	ok.
 
-divide() ->
-	ok.
+factorializer() ->
+	receive
+		{Pid, N} when N < 0 ->
+			Pid ! {fail, N, is_negative},
+			factorializer();
+		{Pid, N} when not is_integer(N) ->
+			Pid ! {fail, N, is_not_integer},
+			factorializer();
+		{Pid, 0} -> 
+			Pid ! 1,
+			factorializer();
+		{Pid, N} -> 
+			Pid ! N * factorializer(),
+			factorializer()
+	end.
+add(_,_,_) -> ok.
+subtract(_,_,_) -> ok.
+multiply(_,_,_) -> ok.
+divide(_,_,_) ->ok.
 
-factorial_of(X) when X < 0 -> 
-	{fail, X, is_negative};
-factorial_of(X) when not is_integer(X) ->
-	{fail, X, is_not_integer};
-factorial_of(0) -> 
-	1;
-factorial_of(N) -> 
-	N * factorial_of(N-1).
+
+factorial_of(Pid, N) ->
+	Pid ! {self(),N},
+	receive
+        Response ->
+            Response
+    end.
+
 
 -ifdef(EUNIT).
 %%
