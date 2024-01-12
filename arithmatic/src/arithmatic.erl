@@ -8,6 +8,41 @@
 %% are to be created such that they can be spawned.
 %%
 
+start_factorializer() ->
+	ok.
+
+start_adder() ->
+	ok.
+
+start_subtracter() ->
+	ok.
+
+start_multiplier() ->
+	ok.
+
+start_divider() ->
+	ok.
+
+add() ->
+	ok.
+
+subtract() ->
+	ok.
+
+multiply() ->
+	ok.
+
+divide() ->
+	ok.
+
+factorial_of(X) when X < 0 -> 
+	{fail, X, is_negative};
+factorial_of(X) when not is_integer(X) ->
+	{fail, X, is_not_integer};
+factorial_of(0) -> 
+	1;
+factorial_of(N) -> 
+	N * factorial_of(N-1).
 
 -ifdef(EUNIT).
 %%
