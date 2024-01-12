@@ -89,9 +89,14 @@ factorializer() ->
 			Pid ! 1,
 			factorializer();
 		{Pid, N} -> 
-			Pid ! N * factorializer(),
+			Pid ! factorial_helper(N),
 			factorializer()
 	end.
+
+factorial_helper(0) -> 1;
+factorial_helper(N) ->
+	N * factorial_helper(N-1).
+
 add(Pid,A,B) -> 
 	Pid ! {self(),A,B},
 	receive
