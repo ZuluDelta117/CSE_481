@@ -8,6 +8,7 @@
 %%
 -module(gen_server_template).
 -behaviour(gen_server).
+-define(SERVER, ?MODULE).
 
 %% Only include the eunit testing library
 %% in the compiled code if testing is 
